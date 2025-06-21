@@ -63,10 +63,26 @@ def delete_tasks(task_id):
     save_tasks(new_tasks)
     print(f"Task {task_id} has been deleted successfully.")
 
+def mark_done(task_id):
+    tasks = load_tasks()
+    for task in tasks:
+        if task['id'] == task_id:
+            task['status'] = 'done'
+            print(f"Status for the task {task_id} set to DONE successfullly.")
+
+
+def mark_inprogress(task_id):
+    tasks = load_tasks()
+    for task in tasks:
+        if task['id'] == task_id:
+            task['status'] = 'inprogress'
+            print(f"Status for the task {task_id} set to INPROGRESS successfullly.")
 
 def print_usage():
     print('Usage:')
     print("\t python3 taskTracker.py Add <Task description>")
+    print("\t python3 taskTracker.py List")
+    print("\t python3 taskTracker.py Delete <task id>")
 
 
 def main():
@@ -74,7 +90,7 @@ def main():
         print_usage()
         return
     
-    commands = ['Add', 'Delete', 'List']
+    commands = ['Add', 'Delete', 'List', 'Mark-in-progess', 'Mark-done']
     command = sys.argv[1]
     if command in commands:
         if command == "Add":
@@ -91,6 +107,16 @@ def main():
                 print("Please provide the id of the task to be deleted :)")
             else:
                 delete_tasks(int(sys.argv[2]))
+        elif command == "Mark-done":
+            if len(sys.argv) < 3 or not sys.argv[2].isdigit():
+                print("Please provide the id of the task to be marked DONE:)")
+            else:
+                mark_done(int(sys.argv[2]))
+        elif command == "Mark-in-progess":
+            if len(sys.argv) < 3 or not sys.argv[2].isdigit():
+                print("Please provide the id of the task to be marked INPROGRESS:)")
+            else:
+                mark_inprogress(int(sys.argv[2]))
     else:
         print("Unknown command: see usages")
         print_usage()
