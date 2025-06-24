@@ -9,6 +9,7 @@ from datetime import datetime
 TASK_FILE = './tasks.json'
 NOW = datetime.now()
 
+
 def load_tasks():
     if not os.path.exists(TASK_FILE):
         return []
@@ -17,7 +18,8 @@ def load_tasks():
             return (json.load(taskList))
         except json.JSONDecodeError:
             return []
-        
+
+
 def save_tasks(tasks):
     with open(TASK_FILE, 'w') as taskList:
         try:
@@ -26,14 +28,17 @@ def save_tasks(tasks):
             print("Couldn't save task....")
 
 
-
 def generate_id(tasks):
     if not tasks:
         return (1)
-    # This looks for the task with the current highest id and adds 1 to the id, so the next task gets assigned the new highest id.
+    # This looks for the task with the current highest id
+    # and adds 1 to the id,
+    # so the next task gets assigned the new highest id.
     return max(task['id'] for task in tasks) + 1
 
+
 tasks = load_tasks()
+
 
 def add_task(title):
     task = {
@@ -50,11 +55,14 @@ def add_task(title):
 
 def list_tasks():
     if not tasks:
-        print("No task found, try adding some tasks using the \n\t add <task_description>")
+        print("No task found, try \
+              adding some tasks \
+              using the \n\t add <task_description>")
         return
     for task in tasks:
-         print(f'{task["id"]}.  {task["description"]} ({task["status"]})')
-         print(f'\tCreated: {task["createdAt"]}, Updated: {task["updatedAt"]}')
+        print(f'{task["id"]}.  {task["description"]} ({task["status"]})')
+        print(f'\tCreated: {task["createdAt"]}, Updated: {task["updatedAt"]}')
+
 
 def delete_tasks(task_id):
     new_tasks = [task for task in tasks if task_id != task["id"]]
@@ -63,6 +71,7 @@ def delete_tasks(task_id):
         return
     save_tasks(new_tasks)
     print(f"Task {task_id} has been deleted successfully.")
+
 
 def mark_done(task_id):
     for task in tasks:
@@ -91,25 +100,28 @@ def update(task_id, title):
     print(f"Successfully updated task {task_id}.")
 
 
-
 def list_todo():
     for task in tasks:
         if task['status'] == 'todo':
-            print(f'{task["id"]}.  {task["description"]} ({task["status"]})')
-            print(f'\tCreated: {task["createdAt"]}, Updated: {task["updatedAt"]}')
+            print(f"{task["id"]}.  {task["description"]} ({task["status"]})")
+            print(f'\tCreated: {task["createdAt"]}, \
+                  Updated: {task["updatedAt"]}')
 
 
 def list_inprogress():
     for task in tasks:
         if task['status'] == 'inprogress':
             print(f'{task["id"]}.  {task["description"]} ({task["status"]})')
-            print(f'\tCreated: {task["createdAt"]}, Updated: {task["updatedAt"]}')
+            print(f'\tCreated: {task["createdAt"]}, \
+                  Updated: {task["updatedAt"]}')
+
 
 def list_done():
     for task in tasks:
         if task['status'] == 'done':
             print(f'{task["id"]}.  {task["description"]} ({task["status"]})')
-            print(f'\tCreated: {task["createdAt"]}, Updated: {task["updatedAt"]}')
+            print(f'\tCreated: {task["createdAt"]}, Updated: \
+                  {task["updatedAt"]}')
 
 
 def print_usage():
@@ -122,12 +134,16 @@ def print_usage():
     print("\t python3 taskTracker.py Update <task_id> <description>")
     print()
 
+
 def main():
     if len(sys.argv) < 2:
         print_usage()
         return
-    
-    commands = ['Add', 'Delete', 'List', 'Mark-in-progress', 'Mark-done', 'Update', "List-inprogress", "List-todo", "List-done"]
+
+    commands = ['Add', 'Delete',
+                'List', 'Mark-in-progress',
+                'Mark-done', 'Update', "List-inprogress",
+                "List-todo", "List-done"]
     command = sys.argv[1]
     if command in commands:
         if command == "Add":
@@ -168,7 +184,7 @@ def main():
     else:
         print("Unknown command: see usages")
         print_usage()
-    
+
 
 if __name__ == "__main__":
     main()
